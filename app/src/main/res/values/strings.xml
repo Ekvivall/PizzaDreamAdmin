@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Pizza Dream Admin</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="menu_home">Меню</string>
+    <string name="menu_pizzerias">Піцерії</string>
+    <string name="menu_orders">Замовлення</string>
+    <string name="menu_news">Новини</string>
+    <string name="menu_vacancies">Вакансії</string>
+    <string name="google_sign_in">Увійти через Google</string>
+    <string name="email_sign_in">Увійти</string>
+    <string name="sign_in_text">Вхід</string>
+    <string name="register_text">Реєстрація</string>
+    <string name="continue_text">Далі</string>
+    <string name="first_name">Ім\'я</string>
+    <string name="last_name">Прізвище</string>
+    <string name="email">Електронна адреса</string>
+    <string name="password">Пароль</string>
+    <string name="forgot_password">Забули пароль</string>
+    <string name="dont_have_account">Не маєте облікового запису? Зареєструватися</string>
+    <string name="or">або</string>
+    <string name="logo">Pizza\n Dream</string>
+    <string name="register_btn">Зареєструватись</string>
+    <string name="have_account">Вже маєте обліковий запис? Увійти</string>
+    <string name="cansel">Скасувати</string>
+    <string name="send">Надіслати</string>
+    <string name="menu_profile">Профіль</string>
+    <string name="sign_out">Вихід</string>
+    <string name="menu_edit_profile">Редагувати профіль</string>
+    <string name="edit_avatar">Змінити аватар</string>
+    <string name="phone">Телефон</string>
+    <string name="save">Зберегти</string>
+    <string name="add_admin">Призначення адміністраторів</string>
+    <string name="appoint_admin">Призначити</string>
+</resources>

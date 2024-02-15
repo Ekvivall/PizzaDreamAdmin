@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_menu_book_24"
+        android:title="@string/menu_home" />
+
+    <item
+        android:id="@+id/navigation_pizzerias"
+        android:icon="@drawable/ic_location_on_24"
+        android:title="@string/menu_pizzerias" />
+
+    <item
+        android:id="@+id/navigation_orders"
+        android:icon="@drawable/ic_receipt_24"
+        android:title="@string/menu_orders" />
+    <item
+        android:id="@+id/navigation_news"
+        android:icon="@drawable/ic_newspaper_24"
+        android:title="@string/menu_news" />
+    <item
+        android:id="@+id/navigation_vacancies"
+        android:icon="@drawable/ic_person_search_24"
+        android:title="@string/menu_vacancies" />
+
+</menu>

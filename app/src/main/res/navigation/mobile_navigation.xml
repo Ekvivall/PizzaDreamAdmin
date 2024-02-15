@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.sokol.pizzadreamadmin.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_pizzerias"
+        android:name="com.sokol.pizzadreamadmin.ui.notifications.NotificationsFragment"
+        android:label="@string/menu_pizzerias"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_orders"
+        android:name="com.sokol.pizzadreamadmin.ui.notifications.NotificationsFragment"
+        android:label="@string/menu_orders"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_news"
+        android:name="com.sokol.pizzadreamadmin.ui.notifications.NotificationsFragment"
+        android:label="@string/menu_news"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_vacancies"
+        android:name="com.sokol.pizzadreamadmin.ui.notifications.NotificationsFragment"
+        android:label="@string/menu_vacancies"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.sokol.pizzadreamadmin.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_edit_profile"
+        android:name="com.sokol.pizzadreamadmin.ui.editProfile.EditProfileFragment"
+        android:label="@string/menu_edit_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_add_admin"
+        android:name="com.sokol.pizzadreamadmin.ui.appointAdmin.AppointAdminFragment"
+        android:label="@string/add_admin"
+        tools:layout="@layout/fragment_appoint_admin" />
+</navigation>

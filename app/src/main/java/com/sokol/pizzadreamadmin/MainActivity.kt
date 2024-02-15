@@ -1,0 +1,133 @@
+package com.sokol.pizzadreamadmin
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.sokol.pizzadreamadmin.Common.Common
+import com.sokol.pizzadreamadmin.Model.UserModel
+import io.reactivex.disposables.CompositeDisposable
+
+class MainActivity : AppCompatActivity() {
+    companion object {
+        private var LOGIN_REQUEST_CODE = 7171
+    }
+
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var listener: FirebaseAuth.AuthStateListener
+    private var compositeDisposable = CompositeDisposable()
+    private lateinit var database: FirebaseDatabase
+    private lateinit var userInfoRef: DatabaseReference
+    private lateinit var providers: List<AuthUI.IdpConfig>
+    override fun onStart() {
+        super.onStart()
+        val fragment: Fragment = SignInFragment()
+        val fm = supportFragmentManager
+        val ft = fm.beginTransaction()
+        ft.replace(R.id.fragment_place, fragment)
+        ft.commit()
+        firebaseAuth.addAuthStateListener(listener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        firebaseAuth.removeAuthStateListener(listener)
+        compositeDisposable.clear()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        initFirebase()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        firebaseAuth.removeAuthStateListener(listener)
+        compositeDisposable.clear()
+    }
+
+    private fun initFirebase() {
+        database = FirebaseDatabase.getInstance()
+        userInfoRef = database.getReference(Common.USER_REFERENCE)
+        firebaseAuth = FirebaseAuth.getInstance()
+        providers = listOf(
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+        listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                var model = UserModel()
+                userInfoRef.child(user.uid)
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                            Toast.makeText(this@MainActivity, "" + p0.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if (!p0.exists()) {
+                                model.uid = user.uid
+                                model.firstName = user.displayName.toString()
+                                model.email = user.email.toString()
+                                model.role = ""
+                                userInfoRef.child(user.uid).setValue(model)
+                                Common.currentUser = model
+                            } else {
+                                model = p0.getValue(UserModel::class.java)!!
+                                Common.currentUser = model
+                                if (model.role == "admin") {
+                                    startActivity(
+                                        Intent(
+                                            this@MainActivity,
+                                            HomeActivity::class.java
+                                        )
+                                    )
+                                    finish()
+                                } else {
+                                    firebaseAuth.signOut()
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        "Адміністратор перевірить та активує користувача найближчим часом",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+
+                        }
+                    })
+            }
+        }
+    }
+
+
+    fun showLoginLayout(view: View) {
+        startActivityForResult(
+            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
+                .setIsSmartLockEnabled(false).build(), LOGIN_REQUEST_CODE
+        )
+    }
+
+    fun changeInfo(view: View) {
+        var fragment: Fragment? = null
+        if (view.id == R.id.register) {
+            fragment = RegisterFragment()
+        } else if (view.id == R.id.sign_in) {
+            fragment = SignInFragment()
+        }
+        val fm = supportFragmentManager
+        val ft = fm.beginTransaction()
+        ft.replace(R.id.fragment_place, fragment!!)
+        ft.commit()
+    }
+
+}
