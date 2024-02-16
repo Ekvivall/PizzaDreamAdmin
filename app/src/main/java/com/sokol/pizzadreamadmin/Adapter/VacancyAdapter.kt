@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sokol.pizzadreamadmin.Common.Common
+import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateVacancyClick
 import com.sokol.pizzadreamadmin.EventBus.VacancyItemClick
 import com.sokol.pizzadreamadmin.Model.VacancyModel
 import com.sokol.pizzadreamadmin.R
@@ -23,6 +25,7 @@ class VacancyAdapter(val items: List<VacancyModel>, val context: Context) :
         var name: TextView = view.findViewById(R.id.vacancy_name)
         var shortDesc: TextView = view.findViewById(R.id.vacancy_short_desc)
         var btnDetails: Button = view.findViewById(R.id.btn_vacancy_details)
+        var update: ImageView = view.findViewById(R.id.update)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -40,6 +43,10 @@ class VacancyAdapter(val items: List<VacancyModel>, val context: Context) :
         Glide.with(context).load(vacancyItem.image).into(holder.image)
         holder.name.text = vacancyItem.name
         holder.shortDesc.text = Html.fromHtml(vacancyItem.shortDesc, Html.FROM_HTML_MODE_LEGACY)
+        holder.update.setOnClickListener {
+            Common.vacancySelected = items[position]
+            EventBus.getDefault().postSticky(UpdateVacancyClick(true))
+        }
         holder.btnDetails.setOnClickListener {
             Common.vacancySelected = vacancyItem
             EventBus.getDefault().postSticky(VacancyItemClick(true))

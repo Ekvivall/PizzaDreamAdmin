@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.CategoryClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
 import com.sokol.pizzadreamadmin.Model.CategoryModel
 import com.sokol.pizzadreamadmin.R
 import org.greenrobot.eventbus.EventBus
@@ -20,6 +21,7 @@ class CategoryAdapter(val items: List<CategoryModel>, val context: Context) :
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         var categoryName: TextView = view.findViewById(R.id.category_name)
         var categoryImage: ImageView = view.findViewById(R.id.category_image)
+        var update: ImageView = view.findViewById(R.id.update)
         private var listener:IRecyclerItemClickListener? = null
         fun setListener(listener: IRecyclerItemClickListener){
             this.listener = listener
@@ -44,6 +46,10 @@ class CategoryAdapter(val items: List<CategoryModel>, val context: Context) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Glide.with(context).load(items[position].image).into(holder.categoryImage)
         holder.categoryName.text = items[position].name
+        holder.update.setOnClickListener {
+            Common.categorySelected = items[position]
+            EventBus.getDefault().postSticky(UpdateCategoryClick(true))
+        }
         holder.setListener(object: IRecyclerItemClickListener{
             override fun onItemClick(view: View, pos: Int){
                 Common.categorySelected = items[pos]

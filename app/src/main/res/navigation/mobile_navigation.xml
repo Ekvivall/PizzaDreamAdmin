@@ -49,4 +49,24 @@
         android:name="com.sokol.pizzadreamadmin.ui.appointAdmin.AppointAdminFragment"
         android:label="@string/add_admin"
         tools:layout="@layout/fragment_appoint_admin" />
+    <fragment
+        android:id="@+id/navigation_update_category"
+        android:name="com.sokol.pizzadreamadmin.ui.updateCategory.UpdateCategoryFragment"
+        android:label="@string/update_category"
+        tools:layout="@layout/fragment_update_category" />
+    <fragment
+        android:id="@+id/navigation_update_pizzeria"
+        android:name="com.sokol.pizzadreamadmin.ui.updatePizzeria.UpdatePizzeriaFragment"
+        android:label="@string/update_pizzeria"
+        tools:layout="@layout/fragment_update_pizzeria" />
+    <fragment
+        android:id="@+id/navigation_update_news"
+        android:name="com.sokol.pizzadreamadmin.ui.updateNews.UpdateNewsFragment"
+        android:label="@string/update_news"
+        tools:layout="@layout/fragment_update_news" />
+    <fragment
+        android:id="@+id/navigation_update_vacancy"
+        android:name="com.sokol.pizzadreamadmin.ui.updateVacancy.UpdateVacancyFragment"
+        android:label="@string/update_vacancy"
+        tools:layout="@layout/fragment_update_vacancy" />
 </navigation>

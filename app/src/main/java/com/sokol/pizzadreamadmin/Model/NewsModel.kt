@@ -5,4 +5,5 @@ class NewsModel {
     var title: String? = null
     var content: String? = null
     var date:Long = 0
+    var id: String? = null
 }

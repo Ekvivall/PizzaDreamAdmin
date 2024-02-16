@@ -4,10 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.sokol.pizzadreamadmin.Common.Common
+import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
+import com.sokol.pizzadreamadmin.EventBus.UpdatePizzeriaClick
 import com.sokol.pizzadreamadmin.Model.PizzeriaModel
 import com.sokol.pizzadreamadmin.R
+import org.greenrobot.eventbus.EventBus
 
 class PizzeriaAdapter(private val items: List<PizzeriaModel>, private val context: Context) :
     RecyclerView.Adapter<PizzeriaAdapter.MyViewHolder>() {
@@ -16,6 +21,7 @@ class PizzeriaAdapter(private val items: List<PizzeriaModel>, private val contex
         var textAddress: TextView = view.findViewById(R.id.text_address)
         var textWorkingHours: TextView = view.findViewById(R.id.text_working_hours)
         var textCoordinate: TextView = view.findViewById(R.id.text_coordinate)
+        var update: ImageView = view.findViewById(R.id.update)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -36,5 +42,9 @@ class PizzeriaAdapter(private val items: List<PizzeriaModel>, private val contex
         holder.textCoordinate.text =
             StringBuilder("Координати (").append(addressItem.lat).append("; ")
                 .append(addressItem.lng).append(")")
+        holder.update.setOnClickListener {
+            Common.pizzeriaSelected = items[position]
+            EventBus.getDefault().postSticky(UpdatePizzeriaClick(true))
+        }
     }
 }

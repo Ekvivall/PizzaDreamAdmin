@@ -3,9 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:layout_margin="8dp"
-    android:background="@drawable/ripple_mode_red">
+    android:layout_margin="8dp">
     <ImageView
         android:id="@+id/category_image"
         android:layout_width="107dp"
@@ -14,12 +12,20 @@
 
     <TextView
         android:id="@+id/category_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:fontFamily="@font/montserrat_bold"
-        android:gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/app_name"
         android:textAllCaps="true"
         android:textSize="20sp" />
+    <ImageView
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_edit_24"
+        android:background="@drawable/ripple_mode_grey" />
 </LinearLayout>

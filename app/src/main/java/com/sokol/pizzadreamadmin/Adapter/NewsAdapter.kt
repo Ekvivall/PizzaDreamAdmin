@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.NewsItemClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateNewsClick
 import com.sokol.pizzadreamadmin.Model.NewsModel
 import com.sokol.pizzadreamadmin.R
 import org.greenrobot.eventbus.EventBus
@@ -26,6 +28,7 @@ class NewsAdapter(val items: List<NewsModel>, val context: Context) :
         var title: TextView = view.findViewById(R.id.news_title)
         var content: TextView = view.findViewById(R.id.news_content)
         var date: TextView = view.findViewById(R.id.news_date)
+        var update: ImageView = view.findViewById(R.id.update)
         private var listener: IRecyclerItemClickListener? = null
 
         init {
@@ -58,6 +61,10 @@ class NewsAdapter(val items: List<NewsModel>, val context: Context) :
         holder.content.text = Html.fromHtml(newsItem.content, Html.FROM_HTML_MODE_LEGACY)
         val date = Date(newsItem.date)
         holder.date.text = StringBuilder(simpleDateFormat.format(date))
+        holder.update.setOnClickListener {
+            Common.newsSelected = items[position]
+            EventBus.getDefault().postSticky(UpdateNewsClick(true))
+        }
         holder.setListener(object : IRecyclerItemClickListener {
             override fun onItemClick(view: View, pos: Int) {
                 Common.newsSelected = items[pos]

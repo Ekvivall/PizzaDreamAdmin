@@ -38,4 +38,20 @@
     <string name="map">Карта</string>
     <string name="list">Список</string>
     <string name="google_maps_key">AIzaSyD9GQK9FfCjUWWWJdNiqq0xrO4Vw-smeqQ</string>
+    <string name="update_category">Оновлення категорії</string>
+    <string name="category_name">Назва категорії</string>
+    <string name="edit_image">Змінити зображення</string>
+    <string name="update_pizzeria">Оновлення піцерії</string>
+    <string name="pizzeria_name">Адреса піцерії</string>
+    <string name="pizzeria_schedule_work">Час роботи піцерії</string>
+    <string name="pizzeria_lat">Широта</string>
+    <string name="pizzeria_lng">Довгота</string>
+    <string name="coordinate">Координати</string>
+    <string name="news_title">Заголовок новини</string>
+    <string name="news_content">Зміст новини</string>
+    <string name="vacancy_name">Назва вакансії</string>
+    <string name="vacancy_short_desc">Короткий опис до вакансії</string>
+    <string name="vacancy_desc">Повний опис вакансії</string>
+    <string name="update_news">Оновлення новини</string>
+    <string name="update_vacancy">Оновлення вакансії</string>
 </resources>

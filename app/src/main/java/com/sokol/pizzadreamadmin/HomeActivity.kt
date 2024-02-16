@@ -19,7 +19,15 @@ import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.AddAdminClick
 import com.sokol.pizzadreamadmin.EventBus.EditProfileClick
 import com.sokol.pizzadreamadmin.EventBus.LogOutClick
+import com.sokol.pizzadreamadmin.EventBus.MenuClick
+import com.sokol.pizzadreamadmin.EventBus.NewsClick
+import com.sokol.pizzadreamadmin.EventBus.PizzeriasClick
 import com.sokol.pizzadreamadmin.EventBus.ProfileClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateNewsClick
+import com.sokol.pizzadreamadmin.EventBus.UpdatePizzeriaClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateVacancyClick
+import com.sokol.pizzadreamadmin.EventBus.VacanciesClick
 import com.sokol.pizzadreamadmin.databinding.ActivityHomeBinding
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -126,6 +134,54 @@ class HomeActivity : AppCompatActivity() {
     fun onProfile(event: ProfileClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_profile)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onUpdateCategory(event: UpdateCategoryClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_update_category)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onMenu(event: MenuClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_category)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onUpdatePizzeria(event: UpdatePizzeriaClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_update_pizzeria)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onPizzerias(event: PizzeriasClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_pizzerias)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onUpdateNews(event: UpdateNewsClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_update_news)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onNews(event: NewsClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_news)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onUpdateVacancy(event: UpdateVacancyClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_update_vacancy)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onVacancies(event: VacanciesClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_vacancies)
         }
     }
 

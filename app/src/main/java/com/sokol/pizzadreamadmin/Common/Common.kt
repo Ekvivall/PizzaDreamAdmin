@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import com.sokol.pizzadreamadmin.Model.CategoryModel
 import com.sokol.pizzadreamadmin.Model.NewsModel
+import com.sokol.pizzadreamadmin.Model.PizzeriaModel
 import com.sokol.pizzadreamadmin.Model.UserModel
 import com.sokol.pizzadreamadmin.Model.VacancyModel
 
@@ -18,6 +19,7 @@ object Common {
     var categorySelected: CategoryModel? = null
     var newsSelected: NewsModel? = null
     var vacancySelected: VacancyModel? = null
+    var pizzeriaSelected: PizzeriaModel? = null
     fun isConnectedToInternet(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
