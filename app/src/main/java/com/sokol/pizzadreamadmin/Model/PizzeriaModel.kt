@@ -1,0 +1,9 @@
+package com.sokol.pizzadreamadmin.Model
+
+class PizzeriaModel {
+    var name: String = ""
+    var lat: Double = 0.0
+    var lng: Double = 0.0
+    var scheduleWork: String = ""
+    var id: String = ""
+}

@@ -34,4 +34,8 @@
     <string name="save">Зберегти</string>
     <string name="add_admin">Призначення адміністраторів</string>
     <string name="appoint_admin">Призначити</string>
+    <string name="details">Деталі</string>
+    <string name="map">Карта</string>
+    <string name="list">Список</string>
+    <string name="google_maps_key">AIzaSyD9GQK9FfCjUWWWJdNiqq0xrO4Vw-smeqQ</string>
 </resources>

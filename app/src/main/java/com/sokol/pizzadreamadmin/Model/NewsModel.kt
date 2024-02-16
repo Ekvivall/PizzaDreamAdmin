@@ -1,0 +1,8 @@
+package com.sokol.pizzadreamadmin.Model
+
+class NewsModel {
+    var image: String? = null
+    var title: String? = null
+    var content: String? = null
+    var date:Long = 0
+}

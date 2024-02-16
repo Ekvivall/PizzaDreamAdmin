@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment_activity_home)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home,
+                R.id.navigation_category,
                 R.id.navigation_pizzerias,
                 R.id.navigation_orders,
                 R.id.navigation_news,
