@@ -54,4 +54,16 @@
     <string name="vacancy_desc">Повний опис вакансії</string>
     <string name="update_news">Оновлення новини</string>
     <string name="update_vacancy">Оновлення вакансії</string>
+    <string name="vacancy_title">Робота у Pizza Dream це :</string>
+    <string name="vacancy_container">1) фіксована погодинна ставка + бонус за кожну доставку + чайові;\n2) гнучкий графік роботи — ти складаєш самостійно;\n3) cтабільні виплати два рази в місяць;\n4) офіційне працевлаштування.\n</string>
+    <string name="resumes">Список резюме</string>
+    <string name="foods">Список страв</string>
+    <string name="reviews_pizzeria">Відгуки до піцерій</string>
+    <string name="sort">Показати спочатку</string>
+    <string name="download_resume">Завантажити резюме</string>
+    <string-array name="sort_options">
+        <item>популярні</item>
+        <item>дешеві</item>
+        <item>дорогі</item>
+    </string-array>
 </resources>

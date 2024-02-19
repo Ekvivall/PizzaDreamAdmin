@@ -69,4 +69,29 @@
         android:name="com.sokol.pizzadreamadmin.ui.updateVacancy.UpdateVacancyFragment"
         android:label="@string/update_vacancy"
         tools:layout="@layout/fragment_update_vacancy" />
+    <fragment
+        android:id="@+id/navigation_news_detail"
+        android:name="com.sokol.pizzadreamadmin.ui.newsdetail.NewsDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_news_detail" />
+    <fragment
+        android:id="@+id/navigation_vacancy_detail"
+        android:name="com.sokol.pizzadreamadmin.ui.vacancyDetail.VacancyDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_vacancy_detail" />
+    <fragment
+        android:id="@+id/navigation_food_list"
+        android:name="com.sokol.pizzadreamadmin.ui.foodList.FoodListFragment"
+        android:label="@string/foods"
+        tools:layout="@layout/fragment_food_list" />
+    <fragment
+        android:id="@+id/navigation_reviews_pizzeria"
+        android:name="com.sokol.pizzadreamadmin.ui.reviewsPizzeria.ReviewsPizzeriaFragment"
+        android:label="@string/reviews_pizzeria"
+        tools:layout="@layout/fragment_reviews_pizzeria" />
+    <fragment
+        android:id="@+id/navigation_resumes"
+        android:name="com.sokol.pizzadreamadmin.ui.resumes.ResumesFragment"
+        android:label="@string/resumes"
+        tools:layout="@layout/fragment_resumes" />
 </navigation>

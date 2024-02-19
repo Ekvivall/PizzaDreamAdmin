@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+    <TextView
+        android:id="@+id/resume_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/black"
+        android:text="Ім'я"
+        android:textSize="18sp"
+        app:drawableStartCompat="@drawable/ic_person_24"
+        android:drawableTint="@color/black"
+        android:drawablePadding="8dp"  />
+
+    <TextView
+        android:id="@+id/resume_date_of_birth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/black"
+        android:text="Дата народження"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        app:drawableStartCompat="@drawable/ic_calendar_month_24"
+        android:drawablePadding="8dp" />
+
+    <TextView
+        android:id="@+id/resume_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/black"
+        android:text="Телефон"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        app:drawableStartCompat="@drawable/ic_phone_24"
+        android:drawablePadding="8dp"  />
+
+    <TextView
+        android:id="@+id/resume_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/black"
+        android:text="Електронна пошта"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        app:drawableStartCompat="@drawable/ic_email_24"
+        android:drawablePadding="8dp" />
+
+    <Button
+        android:id="@+id/btn_resume_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/download_resume"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/resume_time_stamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Часова мітка"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp" />
+</LinearLayout>
