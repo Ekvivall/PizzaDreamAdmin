@@ -61,6 +61,10 @@
     <string name="reviews_pizzeria">Відгуки до піцерій</string>
     <string name="sort">Показати спочатку</string>
     <string name="download_resume">Завантажити резюме</string>
+    <string name="size">Розмір</string>
+    <string name="addon">Додаткові складники</string>
+    <string name="show_comment">Відгуки про товар</string>
+    <string name="comments">Відгуки</string>
     <string-array name="sort_options">
         <item>популярні</item>
         <item>дешеві</item>

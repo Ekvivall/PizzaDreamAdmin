@@ -1,4 +1,4 @@
-package com.sokol.pizzadream.Model
+package com.sokol.pizzadreamadmin.Model
 
 class AddonModel {
     var name:String?=null

@@ -1,8 +1,5 @@
 package com.sokol.pizzadreamadmin.Model
 
-import com.sokol.pizzadream.Model.AddonModel
-import com.sokol.pizzadream.Model.SizeModel
-
 class FoodModel {
     var id:String? = null
     var categoryId:String? = null

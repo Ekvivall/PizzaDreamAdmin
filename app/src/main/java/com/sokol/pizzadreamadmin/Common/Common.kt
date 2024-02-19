@@ -2,6 +2,7 @@ package com.sokol.pizzadreamadmin.Common
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.sokol.pizzadreamadmin.Model.AddonCategoryModel
 import com.sokol.pizzadreamadmin.Model.CategoryModel
 import com.sokol.pizzadreamadmin.Model.FoodModel
 import com.sokol.pizzadreamadmin.Model.NewsModel
@@ -19,6 +20,8 @@ object Common {
     val VACANCIES_REF: String = "Vacancies"
     val REVIEWS_REF = "ReviewsPizzeria"
     val RESUMES_REF = "Resumes"
+    val ADDON_CATEGORY_REF = "Addon"
+    val COMMENT_REF = "Comments"
 
     var currentUser: UserModel? = null
     var categorySelected: CategoryModel? = null
@@ -26,6 +29,7 @@ object Common {
     var vacancySelected: VacancyModel? = null
     var pizzeriaSelected: PizzeriaModel? = null
     var foodSelected: FoodModel? = null
+    var addonCategorySelected: AddonCategoryModel? = null
     fun isConnectedToInternet(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

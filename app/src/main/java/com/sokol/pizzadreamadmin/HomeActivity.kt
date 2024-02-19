@@ -215,7 +215,18 @@ class HomeActivity : AppCompatActivity() {
             navController.navigate(R.id.navigation_resumes)
         }
     }
-
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onFoodSelected(event: FoodItemClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_food_detail)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onComments(event: CommentsClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_comments)
+        }
+    }
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onLogOut(event: LogOutClick) {
         if (event.isSuccess) {

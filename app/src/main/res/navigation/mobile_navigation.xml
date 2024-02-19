@@ -94,4 +94,14 @@
         android:name="com.sokol.pizzadreamadmin.ui.resumes.ResumesFragment"
         android:label="@string/resumes"
         tools:layout="@layout/fragment_resumes" />
+    <fragment
+        android:id="@+id/navigation_food_detail"
+        android:name="com.sokol.pizzadreamadmin.ui.fooddetail.FoodDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_food_detail" />
+    <fragment
+        android:id="@+id/navigation_comments"
+        android:name="com.sokol.pizzadreamadmin.ui.comment.CommentFragment"
+        android:label="@string/comments"
+        tools:layout="@layout/fragment_comments" />
 </navigation>
