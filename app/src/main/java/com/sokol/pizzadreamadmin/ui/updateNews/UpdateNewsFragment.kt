@@ -46,11 +46,11 @@ class UpdateNewsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val udateNewsViewModel = ViewModelProvider(this)[UpdateNewsViewModel::class.java]
+        val updateNewsViewModel = ViewModelProvider(this)[UpdateNewsViewModel::class.java]
         val root = inflater.inflate(R.layout.fragment_update_news, container, false)
         initView(root)
         if (Common.isConnectedToInternet(requireContext())) {
-            udateNewsViewModel.getNewsDetailMutableLiveData().observe(viewLifecycleOwner) {
+            updateNewsViewModel.getNewsDetailMutableLiveData().observe(viewLifecycleOwner) {
                 displayInfo(it)
             }
         } else {

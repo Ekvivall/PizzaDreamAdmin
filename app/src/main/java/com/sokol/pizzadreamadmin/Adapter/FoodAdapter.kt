@@ -21,6 +21,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.FoodItemClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateFoodClick
 import com.sokol.pizzadreamadmin.Model.FoodModel
 import com.sokol.pizzadreamadmin.R
 import org.greenrobot.eventbus.EventBus
@@ -38,6 +40,7 @@ class FoodAdapter(var items: List<FoodModel>, val context: Context) :
         var rating: TextView = view.findViewById(R.id.rating)
         private var listener: IRecyclerItemClickListener? = null
         var delete: ImageView = view.findViewById(R.id.food_delete)
+        var update: ImageView = view.findViewById(R.id.update)
         fun setListener(listener: IRecyclerItemClickListener) {
             this.listener = listener
             itemView.setOnClickListener(this)
@@ -124,6 +127,10 @@ class FoodAdapter(var items: List<FoodModel>, val context: Context) :
             positiveButton.setTextColor(ContextCompat.getColor(context, R.color.red))
             val negativeButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
             negativeButton.setTextColor(ContextCompat.getColor(context, R.color.black))
+        }
+        holder.update.setOnClickListener {
+            Common.foodSelected = items[position]
+            EventBus.getDefault().postSticky(UpdateFoodClick(true))
         }
     }
 }

@@ -228,6 +228,12 @@ class HomeActivity : AppCompatActivity() {
         }
     }
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onUpdateFood(event: UpdateFoodClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_update_food)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onLogOut(event: LogOutClick) {
         if (event.isSuccess) {
             signOut()

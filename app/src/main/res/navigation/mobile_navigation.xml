@@ -104,4 +104,9 @@
         android:name="com.sokol.pizzadreamadmin.ui.comment.CommentFragment"
         android:label="@string/comments"
         tools:layout="@layout/fragment_comments" />
+    <fragment
+        android:id="@+id/navigation_update_food"
+        android:name="com.sokol.pizzadreamadmin.ui.updateFood.UpdateFoodFragment"
+        android:label="@string/update_food"
+        tools:layout="@layout/fragment_update_food" />
 </navigation>

@@ -65,6 +65,14 @@
     <string name="addon">Додаткові складники</string>
     <string name="show_comment">Відгуки про товар</string>
     <string name="comments">Відгуки</string>
+    <string name="update_food">Оновлення страви</string>
+    <string name="food_name">Назва страви</string>
+    <string name="food_desc">Опис страви</string>
+    <string name="addon_group">Набір додаткових інгредієнтів</string>
+    <string name="price">Ціна, грн</string>
+    <string name="name">Назва</string>
+    <string name="add">Додати</string>
+    <string name="edit">Змінити</string>
     <string-array name="sort_options">
         <item>популярні</item>
         <item>дешеві</item>
