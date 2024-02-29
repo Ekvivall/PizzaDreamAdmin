@@ -6,6 +6,7 @@ import com.sokol.pizzadreamadmin.Model.AddonCategoryModel
 import com.sokol.pizzadreamadmin.Model.CategoryModel
 import com.sokol.pizzadreamadmin.Model.FoodModel
 import com.sokol.pizzadreamadmin.Model.NewsModel
+import com.sokol.pizzadreamadmin.Model.OrderModel
 import com.sokol.pizzadreamadmin.Model.PizzeriaModel
 import com.sokol.pizzadreamadmin.Model.UserModel
 import com.sokol.pizzadreamadmin.Model.VacancyModel
@@ -22,6 +23,7 @@ object Common {
     val RESUMES_REF = "Resumes"
     val ADDON_CATEGORY_REF = "Addon"
     val COMMENT_REF = "Comments"
+    val ORDER_REF = "Orders"
 
     var currentUser: UserModel? = null
     var categorySelected: CategoryModel? = null
@@ -30,6 +32,15 @@ object Common {
     var pizzeriaSelected: PizzeriaModel? = null
     var foodSelected: FoodModel? = null
     var addonCategorySelected: AddonCategoryModel? = null
+    var orderSelected: OrderModel? = null
+    var STATUSES: List<String> = listOf(
+        "Очікує підтвердження",
+        "Підготовка",
+        "Готовий до доставки",
+        "В дорозі",
+        "Доставлено",
+        "Скасовано"
+    )
     fun isConnectedToInternet(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

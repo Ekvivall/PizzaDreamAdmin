@@ -234,6 +234,12 @@ class HomeActivity : AppCompatActivity() {
         }
     }
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onOrderSelected(event: OrderDetailClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_order_detail)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onLogOut(event: LogOutClick) {
         if (event.isSuccess) {
             signOut()

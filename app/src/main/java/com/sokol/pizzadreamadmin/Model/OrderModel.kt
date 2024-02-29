@@ -1,0 +1,18 @@
+package com.sokol.pizzadreamadmin.Model
+
+
+class OrderModel {
+    var totalPrice:Double = 0.toDouble()
+    var userId:String?=null
+    var customerName:String?=null
+    var customerPhone:String?=null
+    var customerEmail:String?=null
+    var customerAddress:String?=null
+    var isDeliveryAddress:Boolean = false
+    var transactionId: String?=null
+    var cartItems: List<CartItem>? = null
+    var status:String?=null
+    var orderedTime:Long = 0
+    var orderId:String?=null
+    var forTime:String?=null
+}

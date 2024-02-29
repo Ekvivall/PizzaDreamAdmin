@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_orders"
-        android:name="com.sokol.pizzadreamadmin.ui.pizzerias.PizzeriasFragment"
+        android:name="com.sokol.pizzadreamadmin.ui.viewOrders.ViewOrdersFragment"
         android:label="@string/menu_orders"
-        tools:layout="@layout/fragment_pizzerias" />
+        tools:layout="@layout/fragment_view_orders"/>
 
     <fragment
         android:id="@+id/navigation_news"
@@ -109,4 +109,9 @@
         android:name="com.sokol.pizzadreamadmin.ui.updateFood.UpdateFoodFragment"
         android:label="@string/update_food"
         tools:layout="@layout/fragment_update_food" />
+    <fragment
+        android:id="@+id/navigation_order_detail"
+        android:name="com.sokol.pizzadreamadmin.ui.viewOrderDetail.OrderDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_order_detail" />
 </navigation>
