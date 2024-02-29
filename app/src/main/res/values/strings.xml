@@ -88,6 +88,9 @@
     <string name="goods_worth">Товарів на суму:</string>
     <string name="cost_delivery">Вартість доставки:</string>
     <string name="total">Разом</string>
+    <string name="update_status">Змінити статус</string>
+    <string name="ok">Так</string>
+    <string name="check_update_status">Ви дійсно хочете змінити статус?</string>
     <string-array name="sort_options">
         <item>популярні</item>
         <item>дешеві</item>

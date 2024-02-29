@@ -1,14 +1,20 @@
 package com.sokol.pizzadreamadmin.Adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.FirebaseDatabase
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.OrderDetailClick
@@ -30,6 +36,7 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
         var totalPrice: TextView = view.findViewById(R.id.total_price)
         var recyclerView: RecyclerView = view.findViewById(R.id.order_foods_recycler)
         var delivery: TextView = view.findViewById(R.id.delivery)
+        var update: ImageView = view.findViewById(R.id.update)
         private var listener: IRecyclerItemClickListener? = null
 
         init {
@@ -68,6 +75,11 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
         } else {
             holder.status.setTextColor(ContextCompat.getColor(context, R.color.red))
         }
+        if (orderItem.status == Common.STATUSES[4] || orderItem.status == Common.STATUSES[5]) {
+            holder.update.visibility = View.GONE
+        } else {
+            holder.update.visibility = View.VISIBLE
+        }
         holder.recyclerView.adapter = adapter
         val date = Date(orderItem.orderedTime)
         holder.date.text = StringBuilder(simpleDateFormat.format(date))
@@ -89,6 +101,38 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
             }
 
         })
+        holder.update.setOnClickListener {
+            var layoutDialog =
+                LayoutInflater.from(context).inflate(R.layout.layout_status_update, null)
+            var builder = AlertDialog.Builder(context).setView(layoutDialog)
+            val spnStatus = layoutDialog.findViewById<Spinner>(R.id.spn_order_status)
+            val btnOk = layoutDialog.findViewById<Button>(R.id.btn_ok)
+            val btnCancel = layoutDialog.findViewById<Button>(R.id.btn_cancel)
+            val adapterStatus = ArrayAdapter(
+                context, android.R.layout.simple_spinner_dropdown_item, Common.STATUSES
+            )
+            adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spnStatus.adapter = adapterStatus
+            spnStatus.setSelection(Common.STATUSES.indexOf(orderItem.status))
+            val dialog = builder.create()
+            dialog.show()
+            btnCancel.setOnClickListener { dialog.dismiss() }
+            btnOk.setOnClickListener {
+                val updateData = HashMap<String, Any>()
+                updateData["status"] = spnStatus.selectedItem
+                FirebaseDatabase.getInstance().getReference(Common.ORDER_REF)
+                    .child(orderItem.orderId!!).updateChildren(updateData)
+                    .addOnFailureListener { e ->
+                        Toast.makeText(
+                            context, e.message, Toast.LENGTH_SHORT
+                        ).show()
+                    }.addOnSuccessListener {
+                        orderItem.status = spnStatus.selectedItem.toString()
+                        notifyItemChanged(position)
+                    }
+                dialog.dismiss()
+            }
+        }
 
     }
 }
