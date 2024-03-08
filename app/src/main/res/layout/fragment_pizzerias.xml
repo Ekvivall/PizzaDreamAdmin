@@ -21,11 +21,11 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_no_circle"
             android:button="@drawable/radio_button_no_circle"
+            android:checked="true"
             android:fontFamily="@font/montserrat"
             android:text="@string/list"
             android:textAlignment="center"
             android:textColor="@drawable/radio_button_text_color"
-            android:checked="true"
             android:textSize="20sp" />
 
         <RadioButton
@@ -51,8 +51,27 @@
         android:contentDescription="@string/app_name"
         android:visibility="gone" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pizzeria_recycler"
+    <LinearLayout
+        android:id="@+id/pizzeria_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:height="27dp"
+            android:background="@drawable/background_button_red_white"
+            android:paddingHorizontal="9dp"
+            android:text="@string/add"
+            android:textColor="@color/red"
+            android:textSize="18sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pizzeria_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </LinearLayout>

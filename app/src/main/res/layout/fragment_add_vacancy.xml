@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    tools:context=".ui.updateVacancy.UpdateVacancyFragment">
+    tools:context=".ui.addVacancy.AddVacancyFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -15,24 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/img_vacancy"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/edit_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/fui_transparent"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="@string/edit_image"
-                android:textColor="@color/red"
-                android:textSize="20sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_vacancy_name"
@@ -108,9 +90,9 @@
                 android:id="@+id/save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:height="27dp"
+                android:height="80dp"
                 android:backgroundTint="@color/red"
-                android:text="@string/save"
+                android:text="@string/save_and_load_image"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>

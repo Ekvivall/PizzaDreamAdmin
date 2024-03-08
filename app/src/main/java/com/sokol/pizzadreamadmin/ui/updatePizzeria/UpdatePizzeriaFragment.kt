@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.FirebaseDatabase
 import com.sokol.pizzadreamadmin.Common.Common
-import com.sokol.pizzadreamadmin.EventBus.MenuClick
 import com.sokol.pizzadreamadmin.EventBus.PizzeriasClick
 import com.sokol.pizzadreamadmin.Model.PizzeriaModel
 import com.sokol.pizzadreamadmin.R
@@ -35,9 +35,13 @@ class UpdatePizzeriaFragment : Fragment() {
         val updatePizzeriaViewModel = ViewModelProvider(this)[UpdatePizzeriaViewModel::class.java]
         val root = inflater.inflate(R.layout.fragment_update_pizzeria, container, false)
         initView(root)
+        val actionBar = (activity as AppCompatActivity).supportActionBar
         if (Common.isConnectedToInternet(requireContext())) {
             updatePizzeriaViewModel.getPizzeriaMutableLiveData().observe(viewLifecycleOwner) {
-                displayInfo(it)
+                if (it != null) {
+                    displayInfo(it)
+                    actionBar?.title = "Додавання піцерії"
+                }
             }
         } else {
             Toast.makeText(
@@ -90,18 +94,42 @@ class UpdatePizzeriaFragment : Fragment() {
                     tilPizzeriaLng.error = "Будь ласка, введіть довготу"
                     return@setOnClickListener
                 }
-                val updateData = HashMap<String, Any>()
-                updateData["name"] = name
-                updateData["scheduleWork"] = scheduleWork
-                updateData["lat"] = lat.toDouble()
-                updateData["lng"] = lng.toDouble()
-                updatePizzeria(updateData)
+                if (Common.pizzeriaSelected != null) {
+                    val updateData = HashMap<String, Any>()
+                    updateData["name"] = name
+                    updateData["scheduleWork"] = scheduleWork
+                    updateData["lat"] = lat.toDouble()
+                    updateData["lng"] = lng.toDouble()
+                    updatePizzeria(updateData)
+                } else {
+                    val pizzeriaModel = PizzeriaModel()
+                    val pizzeriaRef =
+                        FirebaseDatabase.getInstance().getReference(Common.PIZZERIA_REF)
+                    pizzeriaModel.id = pizzeriaRef.push().key.toString()
+                    pizzeriaModel.name = name
+                    pizzeriaModel.scheduleWork = scheduleWork
+                    pizzeriaModel.lat = lat.toDouble()
+                    pizzeriaModel.lng = lng.toDouble()
+                    addPizzeria(pizzeriaModel)
+                }
             } else {
                 Toast.makeText(
                     requireContext(), "Будь ласка, перевірте своє з'єднання!", Toast.LENGTH_SHORT
                 ).show()
             }
         }
+    }
+
+    private fun addPizzeria(pizzeriaModel: PizzeriaModel) {
+        FirebaseDatabase.getInstance().getReference(Common.PIZZERIA_REF).child(pizzeriaModel.id)
+            .setValue(pizzeriaModel)
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            }.addOnCompleteListener {
+                Toast.makeText(requireContext(), "Інформацію успішно додано!", Toast.LENGTH_SHORT)
+                    .show()
+                EventBus.getDefault().postSticky(PizzeriasClick(true))
+            }
     }
 
     private fun updatePizzeria(updateData: HashMap<String, Any>) {

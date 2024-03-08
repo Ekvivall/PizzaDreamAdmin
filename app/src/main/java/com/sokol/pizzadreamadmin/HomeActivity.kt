@@ -240,6 +240,30 @@ class HomeActivity : AppCompatActivity() {
         }
     }
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onAddCategory(event: AddCategoryClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_add_category)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onAddNews(event: AddNewsClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_add_news)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onAddVacancy(event: AddVacancyClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_add_vacancy)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onAddFood(event: AddFoodClick) {
+        if (event.isSuccess) {
+            navController.navigate(R.id.navigation_add_food)
+        }
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onLogOut(event: LogOutClick) {
         if (event.isSuccess) {
             signOut()

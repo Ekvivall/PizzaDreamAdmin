@@ -91,6 +91,12 @@
     <string name="update_status">Змінити статус</string>
     <string name="ok">Так</string>
     <string name="check_update_status">Ви дійсно хочете змінити статус?</string>
+    <string name="save_and_load_image">Завантажити зображення та зберегти</string>
+    <string name="add_category">Додавання категорії</string>
+    <string name="add_news">Додавання новини</string>
+    <string name="add_vacancy">Додавання вакансії</string>
+    <string name="add_food">Додавання страви</string>
+    <string name="settings">Налаштування</string>
     <string-array name="sort_options">
         <item>популярні</item>
         <item>дешеві</item>

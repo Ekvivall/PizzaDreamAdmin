@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -26,22 +28,24 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.sokol.pizzadreamadmin.Adapter.PizzeriaAdapter
 import com.sokol.pizzadreamadmin.Common.Common
+import com.sokol.pizzadreamadmin.EventBus.UpdatePizzeriaClick
 import com.sokol.pizzadreamadmin.Model.PizzeriaModel
 import com.sokol.pizzadreamadmin.R
+import org.greenrobot.eventbus.EventBus
 
 class PizzeriasFragment : Fragment() {
     private lateinit var radioGroup: RadioGroup
     private lateinit var mapView: MapView
-    private lateinit var pizzeriasViewModel: PizzeriasViewModel
-    private lateinit var googleMap: GoogleMap
+    private var googleMap: GoogleMap? = null
     private lateinit var locationManager: LocationManager
     private lateinit var pizzeriaRecycler: RecyclerView
+    private lateinit var pizzeriaList:LinearLayout
+    private lateinit var btnCreate: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val pizzeriasViewModel = ViewModelProvider(this).get(PizzeriasViewModel::class.java)
+        val pizzeriasViewModel = ViewModelProvider(this)[PizzeriasViewModel::class.java]
         val root = inflater.inflate(R.layout.fragment_pizzerias, container, false)
-        initView(root)
         if (Common.isConnectedToInternet(requireContext())) {
             initView(root)
             initMap(savedInstanceState)
@@ -61,8 +65,10 @@ class PizzeriasFragment : Fragment() {
     }
 
     private fun initView(root: View) {
+        pizzeriaList = root.findViewById(R.id.pizzeria_list)
         radioGroup = root.findViewById(R.id.radioGroup)
         mapView = root.findViewById(R.id.map_view)
+        btnCreate = root.findViewById(R.id.create)
         pizzeriaRecycler = root.findViewById(R.id.pizzeria_recycler)
         pizzeriaRecycler.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -76,30 +82,34 @@ class PizzeriasFragment : Fragment() {
             when (checkedId) {
                 R.id.radioButtonMap -> {
                     mapView.visibility = View.VISIBLE
-                    pizzeriaRecycler.visibility = View.GONE
+                    pizzeriaList.visibility = View.GONE
                 }
 
                 R.id.radioButtonList -> {
                     mapView.visibility = View.GONE
-                    pizzeriaRecycler.visibility = View.VISIBLE
+                    pizzeriaList.visibility = View.VISIBLE
                 }
             }
         }
         locationManager =
             requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        btnCreate.setOnClickListener {
+            Common.pizzeriaSelected = null
+            EventBus.getDefault().postSticky(UpdatePizzeriaClick(true))
+        }
     }
 
     private fun initMap(savedInstanceState: Bundle?) {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { map ->
             googleMap = map
-            googleMap.uiSettings.isZoomControlsEnabled = true
+            googleMap!!.uiSettings.isZoomControlsEnabled = true
         }
     }
 
     private fun updateMapMarkers(addressList: List<PizzeriaModel>) {
-        googleMap.clear()
-        googleMap.animateCamera(
+        googleMap?.clear()
+        googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(
                     48.4652948442045,
@@ -112,7 +122,7 @@ class PizzeriasFragment : Fragment() {
                 .position(LatLng(address.lat, address.lng))
                 .title(address.name)
                 .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_local_pizza_24))
-            googleMap.addMarker(markerOptions)
+            googleMap?.addMarker(markerOptions)
         }
     }
 

@@ -114,4 +114,24 @@
         android:name="com.sokol.pizzadreamadmin.ui.viewOrderDetail.OrderDetailFragment"
         android:label=""
         tools:layout="@layout/fragment_order_detail" />
+    <fragment
+        android:id="@+id/navigation_add_category"
+        android:name="com.sokol.pizzadreamadmin.ui.addCategory.AddCategoryFragment"
+        android:label="@string/add_category"
+        tools:layout="@layout/fragment_add_category" />
+    <fragment
+        android:id="@+id/navigation_add_news"
+        android:name="com.sokol.pizzadreamadmin.ui.addNews.AddNewsFragment"
+        android:label="@string/add_news"
+        tools:layout="@layout/fragment_add_news" />
+    <fragment
+        android:id="@+id/navigation_add_vacancy"
+        android:name="com.sokol.pizzadreamadmin.ui.addVacancy.AddVacancyFragment"
+        android:label="@string/add_vacancy"
+        tools:layout="@layout/fragment_add_vacancy" />
+    <fragment
+        android:id="@+id/navigation_add_food"
+        android:name="com.sokol.pizzadreamadmin.ui.addFood.AddFoodFragment"
+        android:label="@string/add_food"
+        tools:layout="@layout/fragment_add_food" />
 </navigation>

@@ -8,6 +8,7 @@ import com.sokol.pizzadreamadmin.Model.FoodModel
 import com.sokol.pizzadreamadmin.Model.NewsModel
 import com.sokol.pizzadreamadmin.Model.OrderModel
 import com.sokol.pizzadreamadmin.Model.PizzeriaModel
+import com.sokol.pizzadreamadmin.Model.SizeModel
 import com.sokol.pizzadreamadmin.Model.UserModel
 import com.sokol.pizzadreamadmin.Model.VacancyModel
 import java.math.RoundingMode
@@ -33,6 +34,7 @@ object Common {
     var foodSelected: FoodModel? = null
     var addonCategorySelected: AddonCategoryModel? = null
     var orderSelected: OrderModel? = null
+    var sizeSelected: List<SizeModel> = ArrayList()
     var STATUSES: List<String> = listOf(
         "Очікує підтвердження",
         "Підготовка",

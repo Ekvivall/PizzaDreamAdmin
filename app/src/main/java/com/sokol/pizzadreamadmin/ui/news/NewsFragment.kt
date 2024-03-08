@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,10 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sokol.pizzadreamadmin.Adapter.NewsAdapter
 import com.sokol.pizzadreamadmin.Common.Common
+import com.sokol.pizzadreamadmin.EventBus.AddNewsClick
+import com.sokol.pizzadreamadmin.EventBus.UpdatePizzeriaClick
 import com.sokol.pizzadreamadmin.R
+import org.greenrobot.eventbus.EventBus
 
 class NewsFragment : Fragment() {
     private lateinit var newsRecycler: RecyclerView
+    private lateinit var btnCreate: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -40,9 +45,13 @@ class NewsFragment : Fragment() {
     }
 
     private fun initView(root: View) {
+        btnCreate = root.findViewById(R.id.create)
         newsRecycler = root.findViewById(R.id.news_recycler)
         newsRecycler.setHasFixedSize(true)
         newsRecycler.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        btnCreate.setOnClickListener {
+                EventBus.getDefault().postSticky(AddNewsClick(true))
+            }
     }
 }
