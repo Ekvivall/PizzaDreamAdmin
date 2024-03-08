@@ -1,5 +1,7 @@
 package com.sokol.pizzadreamadmin.ui.viewOrderDetail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import com.sokol.pizzadreamadmin.Adapter.OrderFoodAdapter
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.Model.OrderModel
@@ -108,5 +116,33 @@ class OrderDetailFragment : Fragment() {
         priceDelivery = root.findViewById(R.id.price_delivery)
         totalPrice = root.findViewById(R.id.total_price)
         customerTime = root.findViewById(R.id.customer_time)
+        customerPhone.setOnClickListener {
+            Dexter.withContext(requireContext())
+                .withPermission(android.Manifest.permission.CALL_PHONE)
+                .withListener(object : PermissionListener {
+                    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                        val intent = Intent()
+                        intent.action = Intent.ACTION_DIAL
+                        intent.data = Uri.parse(
+                            StringBuilder("tel:").append(customerPhone.text).toString()
+                        )
+                        startActivity(intent)
+                    }
+
+                    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Ви повинні прийняти цей дозвіл" + p0!!.permissionName,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        p0: PermissionRequest?, p1: PermissionToken?
+                    ) {
+                    }
+
+                }).check()
+        }
     }
 }

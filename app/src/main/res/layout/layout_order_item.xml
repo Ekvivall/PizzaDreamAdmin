@@ -2,13 +2,14 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="17dp">
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:text="№ 024181069"
                 android:textColor="@color/red"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/order_date"
@@ -31,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
                 android:text="9 лют. 2024 10:02"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <ImageView
                 android:id="@+id/update"
@@ -52,6 +53,18 @@
             android:fontFamily="@font/montserrat"
             android:text="@string/app_name"
             android:textColor="@color/black"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/customer_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/app_name"
+            android:textColor="@color/blue"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/ic_phone_24"
+            android:drawableTint="@color/blue"
             android:textSize="14sp" />
 
         <TextView

@@ -117,7 +117,7 @@
                         android:layout_marginTop="4dp"
                         android:drawablePadding="8dp"
                         android:fontFamily="@font/montserrat"
-                        android:textColor="@color/black"
+                        android:textColor="@color/blue"
                         android:textSize="14sp"
                         app:drawableStartCompat="@drawable/ic_phone_24" />
 

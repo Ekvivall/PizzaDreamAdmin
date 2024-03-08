@@ -2,6 +2,8 @@ package com.sokol.pizzadreamadmin.Adapter
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.FirebaseDatabase
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.OrderDetailClick
@@ -33,6 +41,7 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
         var id: TextView = view.findViewById(R.id.order_id)
         var date: TextView = view.findViewById(R.id.order_date)
         var address: TextView = view.findViewById(R.id.customer_address)
+        var phone: TextView = view.findViewById(R.id.customer_phone)
         var totalPrice: TextView = view.findViewById(R.id.total_price)
         var recyclerView: RecyclerView = view.findViewById(R.id.order_foods_recycler)
         var delivery: TextView = view.findViewById(R.id.delivery)
@@ -83,6 +92,34 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
         holder.recyclerView.adapter = adapter
         val date = Date(orderItem.orderedTime)
         holder.date.text = StringBuilder(simpleDateFormat.format(date))
+        holder.phone.text = orderItem.customerPhone
+        holder.phone.setOnClickListener {
+            Dexter.withContext(context).withPermission(android.Manifest.permission.CALL_PHONE)
+                .withListener(object : PermissionListener {
+                    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                        val intent = Intent()
+                        intent.action = Intent.ACTION_DIAL
+                        intent.data = Uri.parse(
+                            StringBuilder("tel:").append(orderItem.customerPhone).toString()
+                        )
+                        context.startActivity(intent)
+                    }
+
+                    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+                        Toast.makeText(
+                            context,
+                            "Ви повинні прийняти цей дозвіл" + p0!!.permissionName,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        p0: PermissionRequest?, p1: PermissionToken?
+                    ) {
+                    }
+
+                }).check()
+        }
         holder.id.text = StringBuilder("№ ").append(orderItem.orderId)
         holder.status.text = StringBuilder("Статус: ").append(orderItem.status)
         holder.totalPrice.text =
@@ -102,9 +139,9 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
 
         })
         holder.update.setOnClickListener {
-            var layoutDialog =
+            val layoutDialog =
                 LayoutInflater.from(context).inflate(R.layout.layout_status_update, null)
-            var builder = AlertDialog.Builder(context).setView(layoutDialog)
+            val builder = AlertDialog.Builder(context).setView(layoutDialog)
             val spnStatus = layoutDialog.findViewById<Spinner>(R.id.spn_order_status)
             val btnOk = layoutDialog.findViewById<Button>(R.id.btn_ok)
             val btnCancel = layoutDialog.findViewById<Button>(R.id.btn_cancel)
