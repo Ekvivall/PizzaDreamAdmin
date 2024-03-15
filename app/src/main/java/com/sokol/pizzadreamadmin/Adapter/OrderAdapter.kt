@@ -16,18 +16,29 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import com.sokol.pizzadreamadmin.Model.FCMSendData
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.OrderDetailClick
 import com.sokol.pizzadreamadmin.Model.OrderModel
+import com.sokol.pizzadreamadmin.Model.TokenModel
 import com.sokol.pizzadreamadmin.R
+import com.sokol.pizzadreamadmin.Remote.IFCMService
+import com.sokol.pizzadreamadmin.Remote.RetrofitFCMClient
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -35,6 +46,8 @@ import java.util.Date
 class OrderAdapter(val items: List<OrderModel>, val context: Context) :
     RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
     private var simpleDateFormat = SimpleDateFormat("dd MMM yyyy HH:mm")
+    private val compositeDisposable = CompositeDisposable()
+    private val ifcmService = RetrofitFCMClient.getInstance().create(IFCMService::class.java)
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         var status: TextView = view.findViewById(R.id.order_status)
@@ -164,12 +177,46 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
                             context, e.message, Toast.LENGTH_SHORT
                         ).show()
                     }.addOnSuccessListener {
-                        orderItem.status = spnStatus.selectedItem.toString()
+                        orderItem.status =
+                            spnStatus.selectedItem.toString()
                         notifyItemChanged(position)
+                        FirebaseDatabase.getInstance()
+                            .getReference(Common.TOKEN_REF)
+                            .child(orderItem.userId!!)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        val tokenModel = snapshot.getValue<TokenModel>()
+                                        val dataSend = HashMap<String, String>()
+                                        dataSend[Common.NOTIFICATION_TITLE] =
+                                            "Ваше замовлення оновлено"
+                                        dataSend[Common.NOTIFICATION_CONTENT] =
+                                            "Ваше замовлення ${orderItem.status}"
+                                        val sendData =
+                                            FCMSendData(tokenModel!!.token, dataSend)
+                                        compositeDisposable.add(
+                                            ifcmService.sendNotification(sendData)
+                                                .subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe ())
+                                    }
+                                    //
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(
+                                        context, error.message, Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            })
                     }
                 dialog.dismiss()
             }
         }
+    }
 
+    fun onStop() {
+        compositeDisposable.clear()
     }
 }
