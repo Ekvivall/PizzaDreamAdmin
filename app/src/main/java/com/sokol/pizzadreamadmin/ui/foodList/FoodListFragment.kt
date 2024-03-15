@@ -15,10 +15,10 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,18 +26,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sokol.pizzadreamadmin.Adapter.FoodAdapter
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.AddFoodClick
-import com.sokol.pizzadreamadmin.EventBus.CategoryClick
 import com.sokol.pizzadreamadmin.Model.FoodModel
 import com.sokol.pizzadreamadmin.R
 import org.greenrobot.eventbus.EventBus
 
-class FoodListFragment: Fragment() {
+class FoodListFragment : Fragment() {
     private lateinit var productsRecycler: RecyclerView
     private lateinit var layoutAnimatorController: LayoutAnimationController
     private var foodAdapter: FoodAdapter? = null
     private lateinit var sortSpinner: Spinner
     private var foodList: List<FoodModel> = ArrayList()
     private lateinit var btnCreate: Button
+    private var resultSearch: MutableList<FoodModel> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -45,7 +45,7 @@ class FoodListFragment: Fragment() {
         val root = inflater.inflate(R.layout.fragment_food_list, container, false)
         initView(root)
         if (Common.isConnectedToInternet(requireContext())) {
-            foodListViewModel.getFoodListMutableLiveData().observe(viewLifecycleOwner){
+            foodListViewModel.getFoodListMutableLiveData().observe(viewLifecycleOwner) {
                 foodList = it
                 updateFoodList(foodList)
             }
@@ -60,10 +60,11 @@ class FoodListFragment: Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.food_list_menu, menu)
         val menuItem = menu.findItem(R.id.action_search)
-        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager =
+            requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menuItem.actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 startSearchFood(p0!!)
                 return true
@@ -74,25 +75,28 @@ class FoodListFragment: Fragment() {
             }
 
         })
-        val closeButton = searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn) as ImageView
+        val closeButton =
+            searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn) as ImageView
         closeButton.setOnClickListener {
-            val editText = searchView.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
+            val editText =
+                searchView.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
             editText.setText("")
             searchView.setQuery("", false)
             searchView.onActionViewCollapsed()
             menuItem.collapseActionView()
+            resultSearch = ArrayList()
             updateFoodList(foodList)
         }
     }
 
     private fun startSearchFood(s: String) {
-        val resultFood: MutableList<FoodModel> = ArrayList()
-        for (foodModel in Common.categorySelected?.foods?.values!!){
-            if (foodModel.name?.lowercase()?.contains(s.lowercase()) == true){
-                resultFood.add(foodModel)
+        resultSearch = ArrayList()
+        for (foodModel in Common.categorySelected?.foods?.values!!) {
+            if (foodModel.name?.lowercase()?.contains(s.lowercase()) == true) {
+                resultSearch.add(foodModel)
             }
         }
-        updateFoodList(resultFood)
+        updateFoodList(resultSearch)
     }
 
     private fun initView(root: View) {
@@ -114,17 +118,18 @@ class FoodListFragment: Fragment() {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
+                val list = if (resultSearch.isEmpty()) foodList else resultSearch
                 val sortedFoodList = when (position) {
                     1 -> {
-                        foodList.sortedBy { it.size[0].price }
+                        list.sortedBy { it.size[0].price }
                     }
 
                     2 -> {
-                        foodList.sortedByDescending { it.size[0].price }
+                        list.sortedByDescending { it.size[0].price }
                     }
 
                     else -> {
-                        foodList.sortedWith(compareByDescending {
+                        list.sortedWith(compareByDescending {
                             if (it.ratingCount == 0L) {
                                 0f
                             } else {

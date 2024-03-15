@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -15,8 +16,33 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sokol.pizzadreamadmin.Common.Common
-import com.sokol.pizzadreamadmin.EventBus.*
+import com.sokol.pizzadreamadmin.EventBus.AddAdminClick
+import com.sokol.pizzadreamadmin.EventBus.AddCategoryClick
+import com.sokol.pizzadreamadmin.EventBus.AddFoodClick
+import com.sokol.pizzadreamadmin.EventBus.AddNewsClick
+import com.sokol.pizzadreamadmin.EventBus.AddVacancyClick
+import com.sokol.pizzadreamadmin.EventBus.CategoryClick
+import com.sokol.pizzadreamadmin.EventBus.CommentsClick
+import com.sokol.pizzadreamadmin.EventBus.EditProfileClick
+import com.sokol.pizzadreamadmin.EventBus.FoodItemClick
+import com.sokol.pizzadreamadmin.EventBus.LogOutClick
+import com.sokol.pizzadreamadmin.EventBus.MenuClick
+import com.sokol.pizzadreamadmin.EventBus.NewsClick
+import com.sokol.pizzadreamadmin.EventBus.NewsItemClick
+import com.sokol.pizzadreamadmin.EventBus.OrderDetailClick
+import com.sokol.pizzadreamadmin.EventBus.PizzeriaClick
+import com.sokol.pizzadreamadmin.EventBus.PizzeriasClick
+import com.sokol.pizzadreamadmin.EventBus.ProfileClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateFoodClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateNewsClick
+import com.sokol.pizzadreamadmin.EventBus.UpdatePizzeriaClick
+import com.sokol.pizzadreamadmin.EventBus.UpdateVacancyClick
+import com.sokol.pizzadreamadmin.EventBus.VacanciesClick
+import com.sokol.pizzadreamadmin.EventBus.VacancyClick
+import com.sokol.pizzadreamadmin.EventBus.VacancyItemClick
 import com.sokol.pizzadreamadmin.databinding.ActivityHomeBinding
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -34,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        subscribeToTopic(Common.getNewOrderTopic())
         navView = binding.navView
 
         navController = findNavController(R.id.nav_host_fragment_activity_home)
@@ -50,6 +76,17 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+    }
+
+    private fun subscribeToTopic(newOrderTopic: String) {
+        FirebaseMessaging.getInstance().subscribeToTopic(newOrderTopic)
+            .addOnFailureListener { message ->
+                Toast.makeText(
+                    this@HomeActivity,
+                    "" + message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -209,60 +246,70 @@ class HomeActivity : AppCompatActivity() {
             navController.navigate(R.id.navigation_reviews_pizzeria)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onVacancySelected(event: VacancyClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_resumes)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onFoodSelected(event: FoodItemClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_food_detail)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onComments(event: CommentsClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_comments)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onUpdateFood(event: UpdateFoodClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_update_food)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onOrderSelected(event: OrderDetailClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_order_detail)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onAddCategory(event: AddCategoryClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_add_category)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onAddNews(event: AddNewsClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_add_news)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onAddVacancy(event: AddVacancyClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_add_vacancy)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onAddFood(event: AddFoodClick) {
         if (event.isSuccess) {
             navController.navigate(R.id.navigation_add_food)
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onLogOut(event: LogOutClick) {
         if (event.isSuccess) {
