@@ -63,18 +63,21 @@ class SplashScreenActivity : AppCompatActivity() {
                             Common.currentUser = model
 
                             if (model!!.role == "admin") {
-                                startActivity(
-                                    Intent(
-                                        this@SplashScreenActivity,
-                                        HomeActivity::class.java
-                                    )
+                                val myIntent = Intent(
+                                    this@SplashScreenActivity, HomeActivity::class.java
                                 )
+                                var isOpenNewOrder = false
+                                if (intent.extras != null) {
+                                    isOpenNewOrder =
+                                        intent.extras!!.getBoolean(Common.IS_OPEN_ACTIVITY_NEW_ORDER, false)
+                                }
+                                myIntent.putExtra(Common.IS_OPEN_ACTIVITY_NEW_ORDER, isOpenNewOrder)
+                                startActivity(myIntent)
                                 finish()
                             } else {
                                 startActivity(
                                     Intent(
-                                        this@SplashScreenActivity,
-                                        MainActivity::class.java
+                                        this@SplashScreenActivity, MainActivity::class.java
                                     )
                                 )
                                 finish()

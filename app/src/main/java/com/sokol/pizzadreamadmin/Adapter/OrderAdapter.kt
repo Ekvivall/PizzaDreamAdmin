@@ -200,7 +200,6 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
                                                 .observeOn(AndroidSchedulers.mainThread())
                                                 .subscribe ())
                                     }
-                                    //
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {

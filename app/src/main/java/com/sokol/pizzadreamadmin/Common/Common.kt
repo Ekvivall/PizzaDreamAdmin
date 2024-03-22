@@ -27,6 +27,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 object Common {
+    val IS_OPEN_ACTIVITY_NEW_ORDER: String ="IsOpenActivityNewOrder"
     val USER_REFERENCE: String = "Users"
     val CATEGORY_REF: String = "Categories"
     val PIZZERIA_REF: String = "Addresses"
