@@ -198,7 +198,7 @@ class AddFoodFragment : Fragment() {
                 foodFolder.downloadUrl.addOnSuccessListener { uri ->
                     food.categoryId = Common.categorySelected!!.id!!
                     food.name = name
-                    food.image = imageUri.toString()
+                    food.image = uri.toString()
                     food.description = desc
                     food.addon = addon
                     food.size = Common.sizeSelected

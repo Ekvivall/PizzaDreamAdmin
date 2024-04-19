@@ -112,7 +112,7 @@ class AddNewsFragment : Fragment() {
             if (task.isSuccessful) {
                 newsFolder.downloadUrl.addOnSuccessListener { uri ->
                     news.title = title
-                    news.image = imageUri.toString()
+                    news.image = uri.toString()
                     news.content = content
                     news.date = Calendar.getInstance().timeInMillis
                     updateNews(news)

@@ -34,7 +34,6 @@ class FoodListFragment : Fragment() {
     private lateinit var productsRecycler: RecyclerView
     private lateinit var layoutAnimatorController: LayoutAnimationController
     private var foodAdapter: FoodAdapter? = null
-    private lateinit var sortSpinner: Spinner
     private var foodList: List<FoodModel> = ArrayList()
     private lateinit var btnCreate: Button
     private var resultSearch: MutableList<FoodModel> = ArrayList()
@@ -107,43 +106,6 @@ class FoodListFragment : Fragment() {
         productsRecycler.setHasFixedSize(true)
         productsRecycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         (activity as AppCompatActivity).supportActionBar!!.title = Common.categorySelected!!.name
-        sortSpinner = root.findViewById(R.id.sort_spinner)
-        val sortOptions = resources.getStringArray(R.array.sort_options)
-        val adapter = ArrayAdapter(
-            requireContext(), android.R.layout.simple_spinner_dropdown_item, sortOptions
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        sortSpinner.adapter = adapter
-        sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                val list = if (resultSearch.isEmpty()) foodList else resultSearch
-                val sortedFoodList = when (position) {
-                    1 -> {
-                        list.sortedBy { it.size[0].price }
-                    }
-
-                    2 -> {
-                        list.sortedByDescending { it.size[0].price }
-                    }
-
-                    else -> {
-                        list.sortedWith(compareByDescending {
-                            if (it.ratingCount == 0L) {
-                                0f
-                            } else {
-                                it.ratingSum.toFloat() / it.ratingCount
-                            }
-                        })
-                    }
-                }
-                updateFoodList(sortedFoodList)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
         btnCreate = root.findViewById(R.id.create)
         btnCreate.setOnClickListener {
             Common.sizeSelected = ArrayList()

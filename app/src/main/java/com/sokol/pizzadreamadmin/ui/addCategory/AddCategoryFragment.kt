@@ -101,7 +101,7 @@ class AddCategoryFragment : Fragment() {
             if (task.isSuccessful) {
                 categoryFolder.downloadUrl.addOnSuccessListener { uri ->
                     category.name = name
-                    category.image = imageUri.toString()
+                    category.image = uri.toString()
                     category.foods = HashMap()
                     updateCategory(category)
                 }

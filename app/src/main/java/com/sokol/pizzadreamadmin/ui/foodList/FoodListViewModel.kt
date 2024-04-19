@@ -11,7 +11,18 @@ class FoodListViewModel: ViewModel() {
         if (foodListMutableLiveData == null) {
             foodListMutableLiveData = MutableLiveData()
         }
-        val foodList = Common.categorySelected!!.foods?.values?.toList() ?: emptyList()
+        val foodList = mutableListOf<FoodModel>()
+        val foodsWithImage = mutableListOf<FoodModel>()
+        Common.categorySelected?.foods?.values?.forEach { foodModel ->
+            if (foodModel.image.isNullOrEmpty()) {
+                foodList.add(0, foodModel) // додавання на початок списку
+            } else {
+                foodsWithImage.add(foodModel)
+            }
+        }
+        // Сортування списку піц з зображенням за назвою
+        foodsWithImage.sortBy { it.name }
+        foodList.addAll(foodsWithImage)
         foodListMutableLiveData!!.value = foodList
         return foodListMutableLiveData!!
     }

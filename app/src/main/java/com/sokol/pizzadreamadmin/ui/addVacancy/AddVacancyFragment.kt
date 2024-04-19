@@ -123,7 +123,7 @@ class AddVacancyFragment : Fragment() {
             if (task.isSuccessful) {
                 vacancyFolder.downloadUrl.addOnSuccessListener { uri ->
                     vacancy.name = name
-                    vacancy.image = imageUri.toString()
+                    vacancy.image = uri.toString()
                     vacancy.desc = desc
                     vacancy.shortDesc = shortDesc
                     updateVacancy(vacancy)

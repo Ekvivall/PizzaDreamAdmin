@@ -86,12 +86,16 @@ class MainActivity : AppCompatActivity() {
                                 model = p0.getValue(UserModel::class.java)!!
                                 Common.currentUser = model
                                 if (model.role == "admin") {
-                                    startActivity(
-                                        Intent(
-                                            this@MainActivity,
-                                            HomeActivity::class.java
-                                        )
+                                    val myIntent = Intent(
+                                        this@MainActivity, HomeActivity::class.java
                                     )
+                                    var isOpenNewOrder = false
+                                    if (intent.extras != null) {
+                                        isOpenNewOrder =
+                                            intent.extras!!.getBoolean(Common.IS_OPEN_ACTIVITY_NEW_ORDER, false)
+                                    }
+                                    myIntent.putExtra(Common.IS_OPEN_ACTIVITY_NEW_ORDER, isOpenNewOrder)
+                                    startActivity(myIntent)
                                     finish()
                                 } else {
                                     firebaseAuth.signOut()
