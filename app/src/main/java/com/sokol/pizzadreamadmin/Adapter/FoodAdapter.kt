@@ -21,7 +21,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.FoodItemClick
-import com.sokol.pizzadreamadmin.EventBus.UpdateCategoryClick
 import com.sokol.pizzadreamadmin.EventBus.UpdateFoodClick
 import com.sokol.pizzadreamadmin.Model.FoodModel
 import com.sokol.pizzadreamadmin.R
@@ -41,6 +40,7 @@ class FoodAdapter(var items: List<FoodModel>, val context: Context) :
         private var listener: IRecyclerItemClickListener? = null
         var delete: ImageView = view.findViewById(R.id.food_delete)
         var update: ImageView = view.findViewById(R.id.update)
+        var creator: TextView = view.findViewById(R.id.food_creator)
         fun setListener(listener: IRecyclerItemClickListener) {
             this.listener = listener
             itemView.setOnClickListener(this)
@@ -63,22 +63,35 @@ class FoodAdapter(var items: List<FoodModel>, val context: Context) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Glide.with(context).load(items[position].image).into(holder.foodImage)
-        holder.foodName.text = items[position].name
-        holder.foodDesc.text =
-            Html.fromHtml(items[position].description, Html.FROM_HTML_MODE_LEGACY)
+        val food = items[position]
+        Glide.with(context).load(
+            if (food.image.isNullOrEmpty()) {
+                R.drawable.food_image_not_found
+            } else {
+                food.image
+            }
+        ).into(holder.foodImage)
+        if (food.createdUserName.isNullOrEmpty()) {
+            holder.creator.visibility = View.GONE
+        } else {
+            holder.creator.visibility = View.VISIBLE
+            holder.creator.text =
+                StringBuilder("Створено користувачем: ").append(food.createdUserName)
+        }
+        holder.foodName.text = food.name
+        holder.foodDesc.text = Html.fromHtml(food.description, Html.FROM_HTML_MODE_LEGACY)
         holder.radioGroupSize.removeAllViews()
-        val ratingAverage = items[position].ratingSum.toFloat() / items[position].ratingCount
+        val ratingAverage = food.ratingSum.toFloat() / food.ratingCount
         holder.ratingBar.rating = ratingAverage
         holder.rating.text =
-            if (items[position].ratingCount == 0L) "0" else String.format("%.1f", ratingAverage)
-        for (sizeModel in items[position].size) {
+            if (food.ratingCount == 0L) "0" else String.format("%.1f", ratingAverage)
+        for (sizeModel in food.size) {
             val radioButton = RadioButton(context)
             radioButton.setOnCheckedChangeListener { compoundButton, b ->
                 if (b) {
-                    items[position].userSelectedSize = sizeModel
+                    food.userSelectedSize = sizeModel
                 }
-                val totalPrice = items[position].userSelectedSize?.price?.toDouble()
+                val totalPrice = food.userSelectedSize?.price?.toDouble()
                 val displayPrice = Math.round(totalPrice!! * 100.0) / 100.0
                 holder.foodPrice.text =
                     StringBuilder("").append(Common.formatPrice(displayPrice)).toString()
@@ -106,18 +119,15 @@ class FoodAdapter(var items: List<FoodModel>, val context: Context) :
                 .setNegativeButton("Відміна") { dialogInterface, _ -> dialogInterface.dismiss() }
                 .setPositiveButton("Так") { dialogInterface, _ ->
                     FirebaseDatabase.getInstance().getReference(Common.CATEGORY_REF)
-                        .child(items[position].categoryId.toString()).child("foods")
-                        .child(items[position].id.toString()).removeValue()
-                        .addOnFailureListener { e ->
+                        .child(food.categoryId.toString()).child("foods").child(food.id.toString())
+                        .removeValue().addOnFailureListener { e ->
                             Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                         }.addOnCompleteListener { task ->
                             val storageReference = FirebaseStorage.getInstance().reference
-                            val fileReference  =
-                                storageReference.child("icon_food/"+items[position].id)
+                            val fileReference = storageReference.child("icon_food/" + food.id)
                             fileReference.delete()
-                            Common.categorySelected?.foods?.remove(items[position].id)
-                            items =
-                                items.filterIndexed { index, _ -> index != position }
+                            Common.categorySelected?.foods?.remove(food.id)
+                            items = items.filterIndexed { index, _ -> index != position }
                             notifyDataSetChanged()
                         }
                 }
@@ -129,7 +139,7 @@ class FoodAdapter(var items: List<FoodModel>, val context: Context) :
             negativeButton.setTextColor(ContextCompat.getColor(context, R.color.black))
         }
         holder.update.setOnClickListener {
-            Common.foodSelected = items[position]
+            Common.foodSelected = food
             EventBus.getDefault().postSticky(UpdateFoodClick(true))
         }
     }

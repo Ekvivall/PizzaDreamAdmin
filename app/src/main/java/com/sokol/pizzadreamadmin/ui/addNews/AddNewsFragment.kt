@@ -18,9 +18,15 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.NewsClick
+import com.sokol.pizzadreamadmin.Model.FCMSendData
 import com.sokol.pizzadreamadmin.Model.NewsModel
 import com.sokol.pizzadreamadmin.R
+import com.sokol.pizzadreamadmin.Remote.IFCMService
+import com.sokol.pizzadreamadmin.Remote.RetrofitFCMClient
 import dmax.dialog.SpotsDialog
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import java.util.Calendar
 
@@ -36,6 +42,8 @@ class AddNewsFragment : Fragment() {
     private lateinit var waitingDialog: AlertDialog
     private var title = ""
     private var content = ""
+    private val compositeDisposable = CompositeDisposable()
+    private val ifcmService = RetrofitFCMClient.getInstance().create(IFCMService::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -125,15 +133,31 @@ class AddNewsFragment : Fragment() {
     }
 
     private fun updateNews(newsModel: NewsModel) {
-        FirebaseDatabase.getInstance().getReference(Common.NEWS_REF)
-            .child(newsModel.id!!).setValue(newsModel)
-            .addOnFailureListener { e ->
+        FirebaseDatabase.getInstance().getReference(Common.NEWS_REF).child(newsModel.id!!)
+            .setValue(newsModel).addOnFailureListener { e ->
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
             }.addOnCompleteListener {
                 Toast.makeText(
                     requireContext(), "Інформацію успішно додано!", Toast.LENGTH_SHORT
                 ).show()
+                sendNews(
+                    newsModel.title.toString(),
+                    newsModel.content.toString(),
+                    newsModel.image.toString()
+                )
                 EventBus.getDefault().postSticky(NewsClick(true))
             }
+    }
+
+    private fun sendNews(title: String, content: String, image: String) {
+        val dataSend = HashMap<String, String>()
+        dataSend[Common.NOTIFICATION_TITLE] = title
+        dataSend[Common.NOTIFICATION_CONTENT] = content
+        dataSend[Common.IMAGE_URL] = image
+        val sendData = FCMSendData(Common.getNewsTopic(), dataSend)
+        compositeDisposable.add(
+            ifcmService.sendNotification(sendData).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe()
+        )
     }
 }

@@ -27,6 +27,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 object Common {
+    val IMAGE_URL: String = "IMAGE_URL"
     val IS_OPEN_ACTIVITY_NEW_ORDER: String ="IsOpenActivityNewOrder"
     val USER_REFERENCE: String = "Users"
     val CATEGORY_REF: String = "Categories"
@@ -131,5 +132,9 @@ object Common {
 
     fun getNewOrderTopic(): String {
         return StringBuilder("/topics/new_order").toString()
+    }
+
+    fun getNewsTopic(): String {
+        return StringBuilder("/topics/news").toString()
     }
 }

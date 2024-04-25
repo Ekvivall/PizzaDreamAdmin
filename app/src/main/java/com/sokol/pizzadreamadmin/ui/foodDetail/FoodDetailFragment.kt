@@ -92,7 +92,13 @@ class FoodDetailFragment : Fragment() {
         foodImg.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        Glide.with(requireContext()).load(it.image).into(foodImg)
+        Glide.with(requireContext()).load(
+            if (it.image.isNullOrEmpty()) {
+                R.drawable.food_image_not_found
+            } else {
+                it.image
+            }
+        ).into(foodImg)
         foodImgLayout.addView(foodImg)
         foodName.text = it.name!!
         foodDesc.text = Html.fromHtml(it.description!!, Html.FROM_HTML_MODE_LEGACY)
