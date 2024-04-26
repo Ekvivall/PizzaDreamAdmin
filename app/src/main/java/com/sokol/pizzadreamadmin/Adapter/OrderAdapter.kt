@@ -27,12 +27,13 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import com.sokol.pizzadreamadmin.Model.FCMSendData
 import com.sokol.pizzadreamadmin.Callback.IRecyclerItemClickListener
 import com.sokol.pizzadreamadmin.Common.Common
 import com.sokol.pizzadreamadmin.EventBus.OrderDetailClick
+import com.sokol.pizzadreamadmin.Model.FCMSendData
 import com.sokol.pizzadreamadmin.Model.OrderModel
 import com.sokol.pizzadreamadmin.Model.TokenModel
+import com.sokol.pizzadreamadmin.Model.UserModel
 import com.sokol.pizzadreamadmin.R
 import com.sokol.pizzadreamadmin.Remote.IFCMService
 import com.sokol.pizzadreamadmin.Remote.RetrofitFCMClient
@@ -42,6 +43,7 @@ import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.math.roundToInt
 
 class OrderAdapter(val items: List<OrderModel>, val context: Context) :
     RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
@@ -177,11 +179,40 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
                             context, e.message, Toast.LENGTH_SHORT
                         ).show()
                     }.addOnSuccessListener {
-                        orderItem.status =
-                            spnStatus.selectedItem.toString()
+                        orderItem.status = spnStatus.selectedItem.toString()
                         notifyItemChanged(position)
-                        FirebaseDatabase.getInstance()
-                            .getReference(Common.TOKEN_REF)
+                        if (orderItem.status == Common.STATUSES[4]) {
+                            // Пошук всіх клієнтських піц у замовленні
+                            val customPizzas =
+                                orderItem.cartItems?.filter { it.categoryId == "customer_pizzas" }
+                            val userPointsMap = mutableMapOf<String, Int>()
+                            // Перевірка, чи це замовлення не створив користувач, який створив клієнтську піцу
+                            customPizzas?.forEach { cartItem ->
+                                if (cartItem.createdUserId != orderItem.userId) {
+                                    val points =
+                                        (cartItem.foodPrice * cartItem.foodQuantity * 0.05).roundToInt()
+                                    userPointsMap[cartItem.createdUserId] =
+                                        userPointsMap.getOrDefault(
+                                            cartItem.createdUserId, 0
+                                        ) + points
+                                }
+                            }
+                            userPointsMap.forEach { (userId, points) ->
+                                FirebaseDatabase.getInstance().getReference(Common.USER_REFERENCE)
+                                    .child(userId).get().addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            val userModel =
+                                                task.result?.getValue(UserModel::class.java)
+                                            userModel?.points = userModel?.points!! + points
+                                            FirebaseDatabase.getInstance()
+                                                .getReference(Common.USER_REFERENCE).child(userId)
+                                                .setValue(userModel)
+                                        }
+                                    }
+                            }
+
+                        }
+                        FirebaseDatabase.getInstance().getReference(Common.TOKEN_REF)
                             .child(orderItem.userId!!)
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -192,13 +223,13 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
                                             "Ваше замовлення оновлено"
                                         dataSend[Common.NOTIFICATION_CONTENT] =
                                             "Ваше замовлення ${orderItem.status}"
-                                        val sendData =
-                                            FCMSendData(tokenModel!!.token, dataSend)
+                                        val sendData = FCMSendData(tokenModel!!.token, dataSend)
                                         compositeDisposable.add(
                                             ifcmService.sendNotification(sendData)
                                                 .subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe ())
+                                                .subscribe()
+                                        )
                                     }
                                 }
 
@@ -214,6 +245,7 @@ class OrderAdapter(val items: List<OrderModel>, val context: Context) :
             }
         }
     }
+
 
     fun onStop() {
         compositeDisposable.clear()

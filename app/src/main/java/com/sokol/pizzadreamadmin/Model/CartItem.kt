@@ -25,4 +25,6 @@ class CartItem {
     var comment: Boolean = false
 
     var uid: String = ""
+
+    var createdUserId: String = ""
 }
