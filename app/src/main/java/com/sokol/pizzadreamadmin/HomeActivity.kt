@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -75,6 +76,11 @@ class HomeActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        // Встановлення listener на зміну місця призначення
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val isMenuDestination = appBarConfiguration.topLevelDestinations.contains(destination.id)
+            navView.visibility = if (isMenuDestination) View.VISIBLE else View.GONE
+        }
         checkOpenOrderFragment()
     }
 

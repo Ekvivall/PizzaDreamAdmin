@@ -150,14 +150,16 @@ class AddNewsFragment : Fragment() {
     }
 
     private fun sendNews(title: String, content: String, image: String) {
-        val dataSend = HashMap<String, String>()
-        dataSend[Common.NOTIFICATION_TITLE] = title
-        dataSend[Common.NOTIFICATION_CONTENT] = content
-        dataSend[Common.IMAGE_URL] = image
-        val sendData = FCMSendData(Common.getNewsTopic(), dataSend)
-        compositeDisposable.add(
-            ifcmService.sendNotification(sendData).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe()
-        )
+        if (Common.currentUser?.receiveNews == true) {
+            val dataSend = HashMap<String, String>()
+            dataSend[Common.NOTIFICATION_TITLE] = title
+            dataSend[Common.NOTIFICATION_CONTENT] = content
+            dataSend[Common.IMAGE_URL] = image
+            val sendData = FCMSendData(Common.getNewsTopic(), dataSend)
+            compositeDisposable.add(
+                ifcmService.sendNotification(sendData).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            )
+        }
     }
 }
