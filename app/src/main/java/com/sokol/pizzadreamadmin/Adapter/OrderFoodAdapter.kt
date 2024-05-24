@@ -95,6 +95,9 @@ class OrderFoodAdapter(val items: List<CartItem>, val context: Context, val orde
                 }
             }
         }
+        else if (items[position].createdUserName != null){
+            res = StringBuilder("Створено користувачем: ").append(items[position].createdUserName).toString()
+        }
         holder.foodAddon.text = res
         if (items[position].foodAddon == "") {
             holder.foodAddonTitle.visibility = View.GONE
