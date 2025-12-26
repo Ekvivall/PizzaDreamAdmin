@@ -22,12 +22,11 @@ The administrative companion app for the PizzaDream ecosystem. This application 
 * **Networking:** Retrofit, FCM (Firebase Cloud Messaging) for push notifications.
 * **Reactive:** RxJava / Coroutines
 
-## Setup
+## 📸 Screenshots
 
-This project shares the same Firebase backend as the Client App.
-1.  Clone the repository.
-2.  Ensure `google-services.json` is present in the `app/` folder.
-3.  Build and run on an Android device or emulator.
+| Edit Categories | Edit Food (Main Info) | Edit Food (Sizes/Addons) | Update Order Status |
+|:---:|:---:|:---:|:---:|
+| <img src="screenshots/edit_menu.png" height="500"> | <img src="screenshots/edit_dish_1.png" height="500"> | <img src="screenshots/edit_dish_2.png" height="500"> | <img src="screenshots/edit_status_in_order.png" height="500"> |
 
 ## Author
 
